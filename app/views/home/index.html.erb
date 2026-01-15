@@ -1,0 +1,31 @@
+<div class="hero min-h-[calc(100vh-4rem)] bg-base-200">
+  <div class="hero-content text-center">
+    <% if authenticated? %>
+      <h1 class="text-4xl font-bold mb-6">
+        Welcome back,
+        <%= Current.user.email_address %>!
+      </h1>
+      <p class="text-base-content/70 mb-8">You're now logged in to Rails HTMX.</p>
+    <% else %>
+      <h1 class="text-4xl font-bold mb-6">Welcome to Rails HTMX</h1>
+      <p class="text-base-content/70 mb-8">A modern Rails application with authentication and DaisyUI styling.</p>
+      
+      <div class="flex gap-4 justify-center">
+        <%= link_to "Login", new_session_path, class: "btn btn-primary" %>
+        <%= link_to "Sign up", new_user_path, class: "btn btn-success" %>
+      </div>
+    <% end %>
+
+    <% if notice = flash[:notice] %>
+      <div class="alert alert-success mt-6">
+        <span><%= notice %></span>
+      </div>
+    <% end %>
+
+    <% if alert = flash[:alert] %>
+      <div class="alert alert-error mt-6">
+        <span><%= alert %></span>
+      </div>
+    <% end %>
+  </div>
+</div>
