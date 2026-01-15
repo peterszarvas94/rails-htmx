@@ -23,9 +23,22 @@
     <%= javascript_importmap_tags %>
   </head>
 
-  <body class="min-h-screen flex flex-col">
-    <%= render 'shared/header' %>
-    <main class="flex-1 flex flex-col items-center p-6">
+  <body hx-target="main" hx-push-url="true" class="min-h-screen flex flex-col">
+    <%= render "shared/header" %>
+    <main id="main" class="flex flex-col items-center p-6">
+      <div id="flash-messages" class="absolute top-0 right-0">
+        <% if notice = flash[:notice] %>
+          <div class="alert alert-success mt-6">
+            <span><%= notice %></span>
+          </div>
+        <% end %>
+
+        <% if alert = flash[:alert] %>
+          <div class="alert alert-error mt-6">
+            <span><%= alert %></span>
+          </div>
+        <% end %>
+      </div>
       <%= yield %>
     </main>
   </body>

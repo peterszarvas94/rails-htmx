@@ -1,34 +1,35 @@
-<div class="card lg:w-96 w-full max-w-md mx-auto">
-  <% if alert = flash[:alert] %>
-    <div class="alert alert-error">
-      <span><%= alert %></span>
-    </div>
-  <% end %>
+<h1 class="text-4xl font-bold mb-6">Sign in</h1>
 
-  <% if notice = flash[:notice] %>
-    <div class="alert alert-success">
-      <span><%= notice %></span>
-    </div>
-  <% end %>
+<%= form_with url: session_url, class: "flex flex-col gap-4",
+    html: { 
+      "hx-post": session_path,
+      "hx-target": "main",
+      "hx-headers": htmx_csrf_headers
+    } do |form| %>
 
-  <div class="card-body">
-    <h2 class="card-title">Sign in</h2>
-
-    <%= form_with url: session_url, class: "contents" do |form| %>
-      <div class="form-control">
-        <label class="label">Email Address</label>
-        <%= form.email_field :email_address, required: true, autofocus: true, autocomplete: "username", placeholder: "Enter your email address", value: params[:email_address], class: "input input-bordered" %>
-      </div>
-
-      <div class="form-control">
-        <label class="label">Password</label>
-        <%= form.password_field :password, required: true, autocomplete: "current-password", placeholder: "Enter your password", maxlength: 72, class: "input input-bordered" %>
-      </div>
-
-      <div class="card-actions">
-        <%= form.submit "Sign in", class: "btn btn-primary" %>
-        <%= link_to "Forgot password?", new_password_path, class: "btn btn-ghost btn-sm" %>
-      </div>
-    <% end %>
+  <div class="flex flex-col gap-2">
+    <label class="label" for="email">Email Address</label>
+    <%= form.email_field :email_address,
+                     required: true,
+                     autofocus: true,
+                     autocomplete: "username",
+                     placeholder: "Enter your email address",
+                     value: params[:email_address],
+                     class: "input max-w-60" %>
   </div>
-</div>
+
+  <div class="flex flex-col gap-2">
+    <label class="label" for="password">Password</label>
+    <%= form.password_field :password,
+                        required: true,
+                        autocomplete: "current-password",
+                        placeholder: "Enter your password",
+                        maxlength: 72,
+                        class: "input max-w-60" %>
+  </div>
+
+  <%= form.submit "Sign in", class: "btn" %>
+  <button type="button" class="link" hx-get="/passwords/new" hx-target="main">
+    Forgot password?
+  </button>
+<% end %>

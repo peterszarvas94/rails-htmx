@@ -3,15 +3,28 @@ class UsersController < ApplicationController
 
   def new
     @user = User.new
+    if htmx_request?
+      render :new, layout: false
+    end
   end
 
   def create
     @user = User.new(user_params)
     if @user.save
+      flash[:notice] = "Welcome! Your account has been created."
       start_new_session_for(@user)
-      redirect_to root_path, notice: "Welcome! Your account has been created."
+
+      if htmx_request?
+        render partial: "home/index", locals: { authenticated: true }
+      else
+        redirect_to root_path, notice: "Welcome! Your account has been created."
+      end
     else
-      render :new, status: :unprocessable_entity
+      if htmx_request?
+        render :new, layout: false, status: :unprocessable_entity
+      else
+        render :new, status: :unprocessable_entity
+      end
     end
   end
 

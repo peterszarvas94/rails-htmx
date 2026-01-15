@@ -1,45 +1,36 @@
-<div class="card lg:w-96 w-full max-w-md mx-auto">
-  <% if alert = flash[:alert] %>
-    <div class="alert alert-error">
-      <span><%= alert %></span>
-    </div>
-  <% end %>
+<h2 class="card-title">Sign up</h2>
 
-  <% if notice = flash[:notice] %>
-    <div class="alert alert-success">
-      <span><%= notice %></span>
-    </div>
-  <% end %>
+<%= form_with model: @user, url: users_path, class: "flex flex-col gap-4",
+    html: { 
+      "hx-post": session_path,
+      "hx-target": "main",
+      "hx-headers": htmx_csrf_headers
+    } do |form| %>
 
-  <div class="card-body">
-    <h2 class="card-title">Sign up</h2>
-
-    <%= form_with model: @user, url: users_path, class: "contents" do |form| %>
-      <% if @user&.errors&.any? %>
-        <div id="error_explanation" class="alert alert-error">
-          <h2><%= pluralize(@user.errors.count, "error") %> prohibited this user from being saved:</h2>
-          <ul>
-            <% @user.errors.each do |error| %>
-              <li><%= error.full_message %></li>
-            <% end %>
-          </ul>
-        </div>
-      <% end %>
-
-      <div class="flex flex-col">
-        <label class="label">Email Address</label>
-        <%= form.email_field :email_address, required: true, autofocus: true, autocomplete: "username", placeholder: "Enter your email address", value: params[:email_address], class: "input input-bordered" %>
-      </div>
-
-      <div class="flex flex-col">
-        <label class="label">Password</label>
-        <%= form.password_field :password, required: true, autocomplete: "new-password", placeholder: "Enter your password", maxlength: 72, class: "input input-bordered" %>
-      </div>
-
-      <div class="card-actions">
-        <%= form.submit "Sign up", class: "btn btn-primary" %>
-        <%= link_to "Already have an account?", new_session_path, class: "btn btn-ghost btn-sm" %>
-      </div>
-    <% end %>
+  <div class="flex flex-col gap-2">
+    <label class="label" for="email">Email Address</label>
+    <%= form.email_field :email_address,
+                     required: true,
+                     autofocus: true,
+                     autocomplete: "username",
+                     placeholder: "Enter your email address",
+                     value: params[:email_address],
+                     class: "input max-w-60" %>
   </div>
-</div>
+
+  <div class="flex flex-col gap-2">
+    <label class="label" for="password">Password</label>
+    <%= form.password_field :password,
+                        required: true,
+                        autocomplete: "new-password",
+                        placeholder: "Enter your password",
+                        maxlength: 72,
+                        class: "input max-w-60" %>
+  </div>
+
+  <%= form.submit "Sign up", class: "btn" %>
+  <button type="button" class="link" hx-get="/session/new" hx-target="main">
+    Already have an account?
+  </button>
+<% end %>
+

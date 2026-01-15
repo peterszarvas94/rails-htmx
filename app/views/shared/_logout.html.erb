@@ -1,0 +1,8 @@
+<button
+  class="link"
+  hx-delete="<%= session_path %>"
+  hx-headers='{"X-CSRF-Token": "<%= form_authenticity_token %>"}'
+  hx-confirm="Logout?"
+>
+  Logout
+</button>
